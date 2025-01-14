@@ -1,0 +1,118 @@
+﻿@model IEnumerable<StudentdetailsCrud.Models.Student>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Add Student</h1>
+<button type="button" class="btn btn-primary" onclick="openAddStudentModal()">
+    Add New Student
+</button>
+@* <p>
+    <a asp-action="Create" asp-controller="Student" class="btn btn-primary ">Create</a>
+</p> *@
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addmited)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.image)
+            </th>
+            <th>Subject Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.StudentName)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Addmited)
+                    </td>
+                    <td>
+                        <img src="Images/@item.image"width="40" />
+                    </td>
+
+                    <td>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Subject Id</th>
+                                    <th>Subject Name</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var subj in item.Addmissions)
+                            {
+                                        <tr>
+                                            <td>@subj.Subject.SubjectId</td>
+                                            <td>@subj.Subject.SubjectName</td>
+                                        </tr>
+                            }
+                            </tbody>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-success">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-danger">Delete</a>
+                            </td>
+                        </table>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <br>
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Student</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+                <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAddStudentModal() {
+        $.ajax({
+            url: '@Url.Action("Create", "Student")',
+            type: 'GET',
+            success: function (result) {
+                $('#modalBodyContent').html(result);
+                $('#exampleModal').modal('show'); // Open modal after loading content
+            },
+            error: function (xhr, status, error) {
+                console.log("Error loading modal content: " + error);
+            }
+        });
+    }
+
+
+</script>

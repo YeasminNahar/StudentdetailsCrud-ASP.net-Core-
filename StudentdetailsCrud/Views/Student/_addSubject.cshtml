@@ -1,0 +1,11 @@
+﻿@model StudentdetailsCrud.Models.Subject
+<div class="rc d-flex">
+    <div>
+        <select asp-items="ViewBag.subject" asp-for="SubjectId" name="SubjectId" class="form-control">
+            <option value="">---Select Subject---</option>
+        </select>
+    </div>
+    <div>
+        <a href="#" class="btn btn-danger remove">Remove</a>
+    </div>
+</div>
